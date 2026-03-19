@@ -1,0 +1,87 @@
+{% extends "documentos/base.html" %}
+
+{% block title %}Novo Documento — DICAS{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card">
+      <div class="card-header bg-dark text-white">
+        <i class="bi bi-upload"></i> Submeter Documento
+      </div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data" id="upload-form">
+          {% csrf_token %}
+
+          {% for field in form %}
+            <div class="mb-3">
+              <label for="{{ field.id_for_label }}" class="form-label fw-semibold">
+                {{ field.label }}
+              </label>
+              {{ field }}
+              {% if field.errors %}
+                {% for erro in field.errors %}
+                  <div class="text-danger small mt-1">{{ erro }}</div>
+                {% endfor %}
+              {% endif %}
+              {% if field.help_text %}
+                <div class="form-text">{{ field.help_text }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          <!-- Feedback visual de upload -->
+          <div id="file-info" class="alert alert-secondary d-none">
+            <i class="bi bi-file-earmark"></i> <span id="file-name"></span>
+            <span class="text-muted small ms-2" id="file-size"></span>
+          </div>
+
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-dark btn-lg" id="btn-submeter">
+              <i class="bi bi-cloud-upload"></i> Submeter e Processar
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer text-muted small">
+        Formatos aceites: PDF, PNG, JPG, JPEG, TIFF &mdash; máximo 10 MB
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Aplicar classes Bootstrap aos campos do form
+  document.querySelectorAll('input, select').forEach(el => {
+    el.classList.add('form-control');
+    if (el.type === 'file') el.classList.add('form-control');
+    if (el.tagName === 'SELECT') {
+      el.classList.remove('form-control');
+      el.classList.add('form-select');
+    }
+  });
+
+  // Mostrar nome e tamanho do ficheiro selecionado
+  const fileInput = document.querySelector('input[type="file"]');
+  if (fileInput) {
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (file) {
+        document.getElementById('file-info').classList.remove('d-none');
+        document.getElementById('file-name').textContent = file.name;
+        const mb = (file.size / 1024 / 1024).toFixed(2);
+        document.getElementById('file-size').textContent = `${mb} MB`;
+      }
+    });
+  }
+
+  // Feedback ao submeter
+  document.getElementById('upload-form').addEventListener('submit', () => {
+    const btn = document.getElementById('btn-submeter');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> A enviar...';
+  });
+</script>
+{% endblock %}
