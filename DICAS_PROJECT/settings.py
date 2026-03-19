@@ -123,6 +123,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Tesseract OCR (Windows)
 TESSERACT_CMD = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
+# Poppler (Windows)
+POPPLER_PATH = r'C:\Users\Freitas\AppData\Local\Microsoft\WinGet\Packages\oschwartz10612.Poppler_Microsoft.Winget.Source_8wekyb3d8bbwe\poppler-25.07.0\Library\bin'
+
 # Ollama
 OLLAMA_URL   = 'http://localhost:11434/api/generate'
 OLLAMA_MODEL = 'llama3'

@@ -34,7 +34,9 @@ def carregar_paginas(caminho: str) -> list[Image.Image]:
 
 def _pdf_para_imagens(caminho: str) -> list[Image.Image]:
     from pdf2image import convert_from_path
-    return convert_from_path(caminho, dpi=300)
+    from django.conf import settings
+    poppler_path = getattr(settings, 'POPPLER_PATH', None)
+    return convert_from_path(caminho, dpi=300, poppler_path=poppler_path)
 
 
 def preprocessar(imagem: Image.Image) -> Image.Image:

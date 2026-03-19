@@ -48,8 +48,31 @@ def extrair_campos(texto_ocr: str, modelo: str = None) -> dict:
     resposta.raise_for_status()
 
     conteudo = resposta.json().get('response', '{}').strip()
-    # Remover bloco markdown se o modelo o incluir
-    if conteudo.startswith('```'):
-        conteudo = conteudo.split('```')[1].removeprefix('json').strip()
+    return _parse_json(conteudo)
 
-    return json.loads(conteudo)
+
+def _parse_json(texto: str) -> dict:
+    """Extrai o primeiro objeto JSON válido da resposta, ignorando texto em volta."""
+    # Caso ideal: resposta é JSON puro
+    try:
+        return json.loads(texto)
+    except json.JSONDecodeError:
+        pass
+
+    # Caso com bloco markdown: ```json {...} ```
+    if '```' in texto:
+        partes = texto.split('```')
+        for parte in partes:
+            candidato = parte.removeprefix('json').strip()
+            try:
+                return json.loads(candidato)
+            except json.JSONDecodeError:
+                continue
+
+    # Caso com texto antes/depois: extrair por delimitadores { }
+    inicio = texto.find('{')
+    fim = texto.rfind('}')
+    if inicio != -1 and fim != -1:
+        return json.loads(texto[inicio:fim + 1])
+
+    raise ValueError(f'Não foi possível extrair JSON da resposta: {texto[:200]}')
