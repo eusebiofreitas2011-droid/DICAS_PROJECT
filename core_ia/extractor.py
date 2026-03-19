@@ -5,8 +5,13 @@ Recebe texto bruto do OCR e devolve um dict com os campos extraídos.
 import json
 import requests
 
-OLLAMA_URL   = 'http://localhost:11434/api/generate'
-OLLAMA_MODEL = 'llama3'  # alternativa leve: phi3:mini
+def _ollama_config():
+    try:
+        from django.conf import settings
+        return getattr(settings, 'OLLAMA_URL', 'http://localhost:11434/api/generate'), \
+               getattr(settings, 'OLLAMA_MODEL', 'llama3')
+    except Exception:
+        return 'http://localhost:11434/api/generate', 'llama3'
 
 PROMPT_TEMPLATE = """\
 Analisa o seguinte texto extraído de um documento financeiro e devolve APENAS um objeto JSON \
@@ -26,14 +31,17 @@ Texto a analisar:
 """
 
 
-def extrair_campos(texto_ocr: str, modelo: str = OLLAMA_MODEL) -> dict:
+def extrair_campos(texto_ocr: str, modelo: str = None) -> dict:
     """
     Envia o texto OCR ao Ollama e devolve o JSON extraído como dict.
     Lança exceção se a resposta não for JSON válido.
     """
+    ollama_url, ollama_model = _ollama_config()
+    if modelo is None:
+        modelo = ollama_model
     prompt = PROMPT_TEMPLATE.format(texto=texto_ocr)
     resposta = requests.post(
-        OLLAMA_URL,
+        ollama_url,
         json={'model': modelo, 'prompt': prompt, 'stream': False},
         timeout=120,
     )

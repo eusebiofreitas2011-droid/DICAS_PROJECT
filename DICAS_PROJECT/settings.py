@@ -120,6 +120,13 @@ STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Tesseract OCR (Windows)
+TESSERACT_CMD = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+# Ollama
+OLLAMA_URL   = 'http://localhost:11434/api/generate'
+OLLAMA_MODEL = 'llama3'
+
 # Celery
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
