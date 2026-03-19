@@ -5,7 +5,7 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h4 class="mb-0"><i class="bi bi-list-ul"></i> Documentos</h4>
-  <a href="{% url 'documentos:upload' %}" class="btn btn-dark">
+  <a href="{% url 'documentos:upload' %}" class="btn btn-primary">
     <i class="bi bi-upload"></i> Novo
   </a>
 </div>
@@ -13,34 +13,34 @@
 <!-- Estatísticas -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
-    <div class="card text-center">
-      <div class="card-body py-2">
-        <div class="fs-4 fw-bold">{{ total }}</div>
-        <div class="text-muted small">Total</div>
+    <div class="card stat-card text-center">
+      <div class="card-body py-3">
+        <div class="stat-value">{{ total }}</div>
+        <div class="stat-label">Total</div>
       </div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="card text-center border-info">
-      <div class="card-body py-2">
-        <div class="fs-4 fw-bold text-info">{{ a_processar }}</div>
-        <div class="text-muted small">A Processar</div>
+    <div class="card stat-card text-center" style="border-color: var(--accent);">
+      <div class="card-body py-3">
+        <div class="stat-value" style="color: var(--accent);">{{ a_processar }}</div>
+        <div class="stat-label">A Processar</div>
       </div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="card text-center border-warning">
-      <div class="card-body py-2">
-        <div class="fs-4 fw-bold text-warning">{{ a_validar }}</div>
-        <div class="text-muted small">A Validar</div>
+    <div class="card stat-card text-center" style="border-color: var(--warning);">
+      <div class="card-body py-3">
+        <div class="stat-value" style="color: var(--warning);">{{ a_validar }}</div>
+        <div class="stat-label">A Validar</div>
       </div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="card text-center border-success">
-      <div class="card-body py-2">
-        <div class="fs-4 fw-bold text-success">{{ validados }}</div>
-        <div class="text-muted small">Validados</div>
+    <div class="card stat-card text-center" style="border-color: var(--green);">
+      <div class="card-body py-3">
+        <div class="stat-value" style="color: var(--green);">{{ validados }}</div>
+        <div class="stat-label">Validados</div>
       </div>
     </div>
   </div>
@@ -51,7 +51,7 @@
 <div class="card">
   <div class="table-responsive">
     <table class="table table-hover mb-0">
-      <thead class="table-dark">
+      <thead>
         <tr>
           <th>#</th>
           <th>Ficheiro</th>
@@ -66,24 +66,20 @@
       <tbody>
         {% for doc in documentos %}
         <tr>
-          <td class="text-muted small">{{ doc.pk }}</td>
+          <td class="text-muted small mono">{{ doc.pk }}</td>
           <td>
-            <i class="bi bi-file-earmark-pdf text-danger"></i>
+            <i class="bi bi-file-earmark-pdf" style="color: var(--danger);"></i>
             {{ doc.nome_ficheiro }}
           </td>
-          <td>{{ doc.get_tipo_documento_display }}</td>
+          <td class="text-muted">{{ doc.get_tipo_documento_display }}</td>
           <td>
             <span class="badge badge-{{ doc.estado }}">
               {{ doc.get_estado_display }}
             </span>
           </td>
-          <td>{{ doc.nif_extraido|default:"—" }}</td>
-          <td>
-            {% if doc.total_extraido %}
-              {{ doc.total_extraido }} €
-            {% else %}
-              —
-            {% endif %}
+          <td class="mono">{{ doc.nif_extraido|default:"—" }}</td>
+          <td class="mono">
+            {% if doc.total_extraido %}{{ doc.total_extraido }} €{% else %}—{% endif %}
           </td>
           <td class="text-muted small">{{ doc.data_upload|date:"d/m/Y H:i" }}</td>
           <td>
@@ -98,10 +94,10 @@
   </div>
 </div>
 {% else %}
-<div class="text-center py-5 text-muted">
+<div class="text-center py-5" style="color: var(--muted);">
   <i class="bi bi-inbox fs-1"></i>
   <p class="mt-2">Nenhum documento submetido ainda.</p>
-  <a href="{% url 'documentos:upload' %}" class="btn btn-dark">
+  <a href="{% url 'documentos:upload' %}" class="btn btn-primary">
     <i class="bi bi-upload"></i> Submeter o primeiro documento
   </a>
 </div>

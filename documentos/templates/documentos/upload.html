@@ -6,7 +6,7 @@
 <div class="row justify-content-center">
   <div class="col-md-7">
     <div class="card">
-      <div class="card-header bg-dark text-white">
+      <div class="card-header">
         <i class="bi bi-upload"></i> Submeter Documento
       </div>
       <div class="card-body">
@@ -31,13 +31,13 @@
           {% endfor %}
 
           <!-- Feedback visual de upload -->
-          <div id="file-info" class="alert alert-secondary d-none">
+          <div id="file-info" class="alert alert-info d-none">
             <i class="bi bi-file-earmark"></i> <span id="file-name"></span>
             <span class="text-muted small ms-2" id="file-size"></span>
           </div>
 
           <div class="d-grid mt-4">
-            <button type="submit" class="btn btn-dark btn-lg" id="btn-submeter">
+            <button type="submit" class="btn btn-primary btn-lg" id="btn-submeter">
               <i class="bi bi-cloud-upload"></i> Submeter e Processar
             </button>
           </div>

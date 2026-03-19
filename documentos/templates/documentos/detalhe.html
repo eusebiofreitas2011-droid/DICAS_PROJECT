@@ -58,8 +58,8 @@
 
     <!-- Processamento em curso -->
     {% if documento.estado == "A_PROCESSAR" %}
-    <div class="card mb-3 border-info" id="card-processando">
-      <div class="card-body text-center text-info py-4">
+    <div class="card mb-3" style="border-color: var(--accent);" id="card-processando">
+      <div class="card-body text-center py-4" style="color: var(--accent);">
         <div class="spinner-border mb-3" role="status"></div>
         <p class="mb-0 fw-semibold">A processar documento…</p>
         <p class="text-muted small">OCR + IA em execução. A página atualiza automaticamente.</p>
@@ -83,7 +83,7 @@
       <div class="card-header">
         <i class="bi bi-robot"></i> Dados Extraídos pela IA
         {% if documento.confianca_ia is not None %}
-          <span class="badge bg-secondary ms-2">
+          <span class="badge ms-2" style="background-color: var(--surface1); border: 1px solid var(--border); color: var(--muted);">
             confiança {{ documento.confianca_ia|floatformat:0 }}%
           </span>
         {% endif %}
@@ -101,7 +101,7 @@
               {{ field }}
               {% if field.errors %}
                 {% for erro in field.errors %}
-                  <div class="text-danger small">{{ erro }}</div>
+                  <div class="small" style="color: var(--danger);">{{ erro }}</div>
                 {% endfor %}
               {% endif %}
             </div>
